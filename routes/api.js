@@ -12,3 +12,5 @@ router.get('/:resource', function(req, res, next) {
 });
 
 module.exports = router;
+
+// this is the test route. Go to locall host and type /api/"whatever"
