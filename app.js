@@ -5,12 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+require('dotenv').config();
 
 var index = require('./routes/index');
 var api = require('./routes/api');
 
 var dbUrl = 'mongodb://localhost/photomap'
-mongoose.connect(dbUrl, function(err, res){
+mongoose.connect(process.env.DB_URL, function(err, res){
   if (err) {
     console.log('DB CONNECTION FAIL')
   } else {
