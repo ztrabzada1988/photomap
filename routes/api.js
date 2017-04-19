@@ -6,14 +6,15 @@ router.get('/:resource', function(req, res, next) {
   var resource = req.params.resource
 
   var controller = controllers[resource]
-  // error block for if user request unrecognized api
+  // error block for if user request unrecognized api like asdfasd instead of /api/comment or post
   if (controller == null){
     res.json({
       confirmation: 'fail',
-      message: 'Invalid Resouce'
+      message: 'Invalid Resource'
     })
     return
   }
+  // setup promise:
 
   // success block
   controller.get(req.query, false)
@@ -31,6 +32,66 @@ router.get('/:resource', function(req, res, next) {
   })
 });
 
-module.exports = router;
+// SET UP ROUTER FOR ID (findById)
+// e.g. if you type localhost:3000/api/comment/:id
 
-// this is the test route. Go to locall host and type /api/"whatever"
+router.get('/:resource/:id', function(req, res, next) {
+  var resource = req.params.resource
+  var controller = controllers[resource]
+  // error block for if user request unrecognized api like asdfasd instead of /api/comment or post
+  if (controller == null){
+    res.json({
+      confirmation: 'fail',
+      message: 'Invalid Resource'
+    })
+    return
+  }
+
+  // if passes above screening of valid resource/id run:
+   var id = req.params.id
+   controller.getById(id, false)
+  .then(function(results){
+    res.json({
+      confirmation: 'success',
+      results: results
+    })
+  })
+  .catch(function(err){
+    res.json({
+      confirmation: 'fail',
+      message: 'ID not found'
+    })
+  })
+});
+
+// SET UP ROUTER FOR POST 
+
+router.post('/:resource/:id', function(req, res, next) {
+  var resource = req.params.resource
+  var controller = controllers[resource]
+  // error block for if user request unrecognized api like asdfasd instead of /api/comment or post
+  if (controller == null){
+    res.json({
+      confirmation: 'fail',
+      message: 'Invalid Resource'
+    })
+    return
+  }
+
+   // remember post request takes the body not query
+  controller.post(req.body, false)
+  .then(function(result){
+    res.json({
+      confirmation: 'success',
+      results: result
+    })
+  })
+  .catch(function(err){
+    res.json({
+      confirmation: 'fail',
+      message: err
+    })
+  })
+})
+
+module.exports = router;
