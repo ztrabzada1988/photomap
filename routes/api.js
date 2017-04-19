@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var controllers = require('../controllers');
 
+// NOTE: Since we are using Promise (imported from controllers) we dont need to use
+//       callback functions, we can just use .catch and .then
+
 router.get('/:resource', function(req, res, next) {
   var resource = req.params.resource
 
@@ -48,12 +51,11 @@ router.get('/:resource/:id', function(req, res, next) {
   }
 
   // if passes above screening of valid resource/id run:
-   var id = req.params.id
-   controller.getById(id, false)
-  .then(function(results){
+   controller.getById(req.params.id, false)
+  .then(function(result){
     res.json({
       confirmation: 'success',
-      results: results
+      result: result
     })
   })
   .catch(function(err){
@@ -66,7 +68,7 @@ router.get('/:resource/:id', function(req, res, next) {
 
 // SET UP ROUTER FOR POST 
 
-router.post('/:resource/:id', function(req, res, next) {
+router.post('/:resource/', function(req, res, next) {
   var resource = req.params.resource
   var controller = controllers[resource]
   // error block for if user request unrecognized api like asdfasd instead of /api/comment or post
@@ -83,7 +85,7 @@ router.post('/:resource/:id', function(req, res, next) {
   .then(function(result){
     res.json({
       confirmation: 'success',
-      results: result
+      result: result
     })
   })
   .catch(function(err){
@@ -93,5 +95,7 @@ router.post('/:resource/:id', function(req, res, next) {
     })
   })
 })
+
+
 
 module.exports = router;
