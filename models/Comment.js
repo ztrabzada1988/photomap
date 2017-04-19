@@ -7,4 +7,4 @@ var CommentSchema = new mongoose.Schema({
     timestamp: {type:Date, default: Date.now}
 });
 
-module.exports = mongoose.model('ProfileSchema', ProfileSchema);
+module.exports = mongoose.model('CommentSchema', CommentSchema);
