@@ -6,9 +6,9 @@ class App extends Component {
     render(){
         return (
             <div>
-                React Entry Point
+                Hello World. Backend is up and running 
                 <Posts />
-            </div>    
+            </div>
         )
     }
 }
